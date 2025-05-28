@@ -17,7 +17,8 @@ export const handler = async (event) => {
     try {
       const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${input_param}`)
 
-      if (!response.ok) return JSON.stringify({ message: `GIPHY API error: ${response}` });
+      if (!response.ok) throw JSON.stringify({ message: `GIPHY API error: ${response}` });
+      
       const data = await response.json();
       if (!data.data || data.data.length === 0) {
         return {
@@ -43,7 +44,7 @@ export const handler = async (event) => {
     } catch (error) {
       return{
         statusCode: 500,
-        body: JSON.stringify(error.message)
+        body: JSON.stringify({error})
       }
     }
 }
